@@ -1,3 +1,21 @@
+_G.playerNom = game.Players.LocalPlayer
+
+function leeQuest()
+	for i,v in ipairs(game.workspace:GetChildren()) do
+		if v.Name == "Quest" and math.round(v["Left Arm"].Position.X) == -177 then
+			v.ClickPart.QuestTake.QuestTake.Accept.RemoteEvent:FireServer()
+		end
+	end	
+end
+
+function atk()
+	for i,v in ipairs(game.workspace:GetChildren()) do
+		if v.Name == _G.playerNom.Name then
+			return v
+		end
+	end	
+end
+
 --import de la lib
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 --crée la fenetre
@@ -22,28 +40,28 @@ Section:NewButton("Tp lee", "tp a lee", function()
 end)
 
 --crée un bouton pour Section
---Section:NewButton("Lee Quest", "prend la quete de lee", function()
+Section:NewButton("Lee Quest", "prend la quete de lee", function()
 	--Prendre la quete Lee
---   if game.Workspace.Quest["Left Arm"].Position == -177.237, 1540.65, 2581.62 then
- --       game:GetService("Workspace").Quest.ClickPart.QuestTake.QuestTake.Accept.RemoteEvent:FireServer()
- --   end
---end)	
+	leeQuest()
+end)	
 
 --crée un toggle bouton pour Section
 Section:NewToggle("ToggleText", "auto farm lee", function(state)
 	if state then
 		_G.state = true
-		_G.playerNom = game.Players.LocalPlayer
-		game.Players.LocalPlayer.Backpack["1st Susanoo"].Parent = game:GetService("Workspace")[_G.playerNom.name]
-		while _G.state and _G.playerNom.Character.Humanoid.Health>=0 do
+		a = true
+		while a do --and  _G.playerNom.Character.Humanoid.Health>=0 do
 			wait()
+			if game.Players.LocalPlayer.Backpack:FindFirstChild("1st Susanoo") then
+				game.Players.LocalPlayer.Backpack["1st Susanoo"].Parent = game:GetService("Workspace")[_G.playerNom.name]
+			end
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace["Rock Lee"].Head.CFrame
-			game:GetService("Workspace").Tuture57["1st Susanoo"].punch:FireServer()
-			game:GetService("Workspace").Tuture57["1st Susanoo"].RemoteEvent:FireServer()
+			local itsme = atk()
+			itsme["1st Susanoo"].punch:FireServer()
+			itsme["1st Susanoo"].RemoteEvent:FireServer()
 		end
-		print("attaque finito")
-
 	else
 		_G.state = false
+		a= false
 	end
 end)
